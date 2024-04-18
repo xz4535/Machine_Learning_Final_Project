@@ -22,6 +22,34 @@ def plot_graph(stock_data, revenue_data, stock):
     fig.update_layout(showlegend=False, height=1000, title=stock, xaxis_rangeslider_visible=True)
     fig.show()
 
+# Using the Ticker function to create a ticker object.
+# ticker symbol of Google is GOOGL for Class A shares or GOOG for Class C shares
+google_data = yf.Ticker('GOOGL')  # You can replace 'GOOGL' with 'GOOG' if you prefer
+
+# history function helps to extract stock information.
+# setting period to 1 day and interval to 1 minute to get information at minute-level granularity
+google_data_daily = google_data.history(period='2y', interval='1d')
+
+# Filter for the year 2023
+google_data_2023 = google_data_daily.loc[google_data_daily.index.year == 2023]
+# Save the 2023 data to a CSV file
+google_data_2023.to_csv('google_stock_data_2023.csv', index=True)
+
+
+# Filter for the year 2024
+google_data_2024 = google_data_daily.loc[google_data_daily.index.year == 2024]
+# Save the 2024 data to a CSV file
+google_data_2024.to_csv('google_stock_data_2024.csv', index=True)
+
+# # Save the DataFrame to a CSV file
+# google_data_min.to_csv('google_stock_data.csv', index=False)
+
+# Print out information to confirm the process
+print("Saved 2023 data with {} rows".format(len(google_data_2023)))
+print("Saved 2024 data with {} rows".format(len(google_data_2024)))
+# # display the first twenty rows with explicit time format to see the one-minute interval
+# print(google_data_min.head(5).to_string(index=False))
+
 # # Using the Ticker function to create a ticker object.
 # # ticker symbol of tesla is TSLA
 # tesla_data = yf.Ticker('TSLA')
@@ -37,23 +65,6 @@ def plot_graph(stock_data, revenue_data, stock):
 # tsla_data.head()
 
 # print (tsla_data)
-
-# Using the Ticker function to create a ticker object.
-# ticker symbol of Google is GOOGL for Class A shares or GOOG for Class C shares
-google_data = yf.Ticker('GOOGL')  # You can replace 'GOOGL' with 'GOOG' if you prefer
-
-# history function helps to extract stock information.
-# setting period to 1 day and interval to 1 minute to get information at minute-level granularity
-google_data_min = google_data.history(period='1d', interval='1m')
-
-# Resetting the index
-google_data_min.reset_index(inplace=True)
-
-# Save the DataFrame to a CSV file
-google_data_min.to_csv('google_stock_data.csv', index=False)
-
-# display the first twenty rows with explicit time format to see the one-minute interval
-print(google_data_min.head(5).to_string(index=False))
 
 
 
