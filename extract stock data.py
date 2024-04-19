@@ -26,18 +26,21 @@ def plot_graph(stock_data, revenue_data, stock):
 # ticker symbol of Google is GOOGL for Class A shares or GOOG for Class C shares
 tesla_data = yf.Ticker('TSLA')  # You can replace 'GOOGL' with 'GOOG' if you prefer
 
-# history function helps to extract stock information.
-# setting period to 1 day and interval to 1 minute to get information at minute-level granularity
-tesla_data_daily = tesla_data.history(period='2y', interval='1h')
+tesla_data_hour = tesla_data.history(period='2y', interval='1h')
+
+# Filter for the year 2022
+tesla_data_2022 = tesla_data_hour.loc[tesla_data_hour.index.year == 2022]
+# Save the 2022 data to a CSV file
+tesla_data_2022.to_csv('tesla_stock_data_2022.csv', index=True)
 
 # Filter for the year 2023
-tesla_data_2023 = tesla_data_daily.loc[tesla_data_daily.index.year == 2023]
+tesla_data_2023 = tesla_data_hour.loc[tesla_data_hour.index.year == 2023]
 # Save the 2023 data to a CSV file
 tesla_data_2023.to_csv('tesla_stock_data_2023.csv', index=True)
 
 
 # Filter for the year 2024
-tesla_data_2024 = tesla_data_daily.loc[tesla_data_daily.index.year == 2024]
+tesla_data_2024 = tesla_data_hour.loc[tesla_data_hour.index.year == 2024]
 # Save the 2024 data to a CSV file
 tesla_data_2024.to_csv('tesla_stock_data_2024.csv', index=True)
 
@@ -47,24 +50,6 @@ tesla_data_2024.to_csv('tesla_stock_data_2024.csv', index=True)
 # Print out information to confirm the process
 print("Saved 2023 data with {} rows".format(len(tesla_data_2023)))
 print("Saved 2024 data with {} rows".format(len(tesla_data_2024)))
-# # display the first twenty rows with explicit time format to see the one-minute interval
-# print(google_data_min.head(5).to_string(index=False))
-
-# # Using the Ticker function to create a ticker object.
-# # ticker symbol of tesla is TSLA
-# tesla_data = yf.Ticker('TSLA')
-
-# # history function helps to extract stock information.
-# # setting period parameter to max to get information for the maximum amount of time.
-# tsla_data = tesla_data.history(period='max')
-
-# # Resetting the index
-# tsla_data.reset_index(inplace=True)
-
-# # display the first five rows
-# tsla_data.head()
-
-# print (tsla_data)
 
 
 
