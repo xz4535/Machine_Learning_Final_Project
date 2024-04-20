@@ -22,34 +22,64 @@ def plot_graph(stock_data, revenue_data, stock):
     fig.update_layout(showlegend=False, height=1000, title=stock, xaxis_rangeslider_visible=True)
     fig.show()
 
-# Using the Ticker function to create a ticker object.
-# ticker symbol of Google is GOOGL for Class A shares or GOOG for Class C shares
-tesla_data = yf.Ticker('TSLA')  # You can replace 'GOOGL' with 'GOOG' if you prefer
+# Define your company tickers
+company_tickers = ['ADS.DE', 'GOOGL', 'TSLA']  # Replace with actual tickers
 
-tesla_data_hour = tesla_data.history(period='2y', interval='1h')
+# Define the period for your data
+period = '2y'  # Two years period
+interval = '1h'  # Hourly data
 
-# Filter for the year 2022
-tesla_data_2022 = tesla_data_hour.loc[tesla_data_hour.index.year == 2022]
-# Save the 2022 data to a CSV file
-tesla_data_2022.to_csv('tesla_stock_data_2022.csv', index=True)
+for ticker in company_tickers:
+    # Fetch the stock data
+    stock_data = yf.Ticker(ticker)
+    stock_data_hourly = stock_data.history(period=period, interval=interval)
 
-# Filter for the year 2023
-tesla_data_2023 = tesla_data_hour.loc[tesla_data_hour.index.year == 2023]
-# Save the 2023 data to a CSV file
-tesla_data_2023.to_csv('tesla_stock_data_2023.csv', index=True)
+    # Filter and save the data for 2023 and 2024
+    for year in [2023, 2024]:
+        stock_data_year = stock_data_hourly[stock_data_hourly.index.year == year]
+        stock_data_year.to_csv(f'{ticker}_stock_data_{year}.csv', index=True)
+
+    # Now, read the saved data back into DataFrames
+    data_2023 = pd.read_csv(f'{ticker}_stock_data_2023.csv')
+    data_2024 = pd.read_csv(f'{ticker}_stock_data_2024.csv')
+
+    # Concatenate the dataframes for 2023 and 2024
+    combined_data = pd.concat([data_2023, data_2024], ignore_index=True)
+
+# Save the combined dataframe to a new CSV file for the company
+    combined_data.to_csv(f'{ticker}_stock_data_2023_2024.csv', index=False)
+
+    print(f'Combined hourly data for {ticker} saved to {ticker}_stock_data_2023_2024.csv')
 
 
-# Filter for the year 2024
-tesla_data_2024 = tesla_data_hour.loc[tesla_data_hour.index.year == 2024]
-# Save the 2024 data to a CSV file
-tesla_data_2024.to_csv('tesla_stock_data_2024.csv', index=True)
+# # Using the Ticker function to create a ticker object.
+# # ticker symbol of Google is GOOGL for Class A shares or GOOG for Class C shares
+# data = yf.ticker('TSLA')  # You can replace 'GOOGL' with 'GOOG' if you prefer
 
-# # Save the DataFrame to a CSV file
-# google_data_min.to_csv('google_stock_data.csv', index=False)
+# tesla_data_hour = data.history(period='2y', interval='1h')
 
-# Print out information to confirm the process
-print("Saved 2023 data with {} rows".format(len(tesla_data_2023)))
-print("Saved 2024 data with {} rows".format(len(tesla_data_2024)))
+# # Filter for the year 2022
+# tesla_data_2022 = tesla_data_hour.loc[tesla_data_hour.index.year == 2022]
+# # Save the 2022 data to a CSV file
+# tesla_data_2022.to_csv('tesla_stock_data_2022.csv', index=True)
+
+# # Filter for the year 2023
+# tesla_data_2023 = tesla_data_hour.loc[tesla_data_hour.index.year == 2023]
+# # Save the 2023 data to a CSV file
+# tesla_data_2023.to_csv('tesla_stock_data_2023.csv', index=True)
+
+
+# # Filter for the year 2024
+# tesla_data_2024 = tesla_data_hour.loc[tesla_data_hour.index.year == 2024]
+# # Save the 2024 data to a CSV file
+# tesla_data_2024.to_csv('tesla_stock_data_2024.csv', index=True)
+
+# # # Save the DataFrame to a CSV file
+# # google_data_min.to_csv('google_stock_data.csv', index=False)
+
+# # Print out information to confirm the process
+# print("Saved 2023 data with {} rows".format(len(tesla_data_2023)))
+# print("Saved 2024 data with {} rows".format(len(tesla_data_2024)))
 
 
 
