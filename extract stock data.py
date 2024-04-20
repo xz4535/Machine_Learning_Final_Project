@@ -27,7 +27,7 @@ company_tickers = ['ADS.DE', 'GOOGL', 'TSLA']  # Replace with actual tickers
 
 # Define the period for your data
 period = '2y'  # Two years period
-interval = '1h'  # Hourly data
+interval = '1d'  # Hourly data
 
 for ticker in company_tickers:
     # Fetch the stock data
@@ -37,19 +37,19 @@ for ticker in company_tickers:
     # Filter and save the data for 2023 and 2024
     for year in [2023, 2024]:
         stock_data_year = stock_data_hourly[stock_data_hourly.index.year == year]
-        stock_data_year.to_csv(f'{ticker}_stock_data_{year}.csv', index=True)
+        stock_data_year.to_csv(f'{ticker}_stock_data_day_{year}.csv', index=True)
 
     # Now, read the saved data back into DataFrames
-    data_2023 = pd.read_csv(f'{ticker}_stock_data_2023.csv')
-    data_2024 = pd.read_csv(f'{ticker}_stock_data_2024.csv')
+    data_2023 = pd.read_csv(f'{ticker}_stock_data_day_2023.csv')
+    data_2024 = pd.read_csv(f'{ticker}_stock_data_day_2024.csv')
 
     # Concatenate the dataframes for 2023 and 2024
     combined_data = pd.concat([data_2023, data_2024], ignore_index=True)
 
 # Save the combined dataframe to a new CSV file for the company
-    combined_data.to_csv(f'{ticker}_stock_data_2023_2024.csv', index=False)
+    combined_data.to_csv(f'{ticker}_stock_data_day_2023_2024.csv', index=False)
 
-    print(f'Combined hourly data for {ticker} saved to {ticker}_stock_data_2023_2024.csv')
+    print(f'Combined hourly data for {ticker} saved to {ticker}_stock_data_day_2023_2024.csv')
 
 
 # # Using the Ticker function to create a ticker object.
