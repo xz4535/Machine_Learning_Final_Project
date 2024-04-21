@@ -14,9 +14,10 @@ print(device)
 
 # Load data
 data = pd.read_csv('TSLA_stock_data_2023.csv')
+data_day = pd.read.csv('TSLA_stock_data_day_2023.csv')
 
 # Provide the data
-state=torch.randn(1000,7+7+7+30).to(device=device)
+state=torch.randn(1000,7+7+30).to(device=device)
 predict_price=torch.randn(1000,1).to(device=device)
 
 # divide the data into training part and test part
@@ -40,6 +41,7 @@ class NN(nn.Module):
 
 # set some initail parameters 
 LR = 1e-3
+Weight_decay = 0.01
 n_observations = len(state[0])
 
 # value_net is your prediction function, take state as input and output is the prediction price
@@ -47,7 +49,7 @@ value_net = NN(n_observations).to(device)
 
 
 # 'optimize'  is an easy package to do Gredient decent, 'Adam' is a method to let learing rate decay as step go.
-optimizer = optim.Adam(value_net.parameters(), lr=LR)
+optimizer = optim.Adam(value_net.parameters(), lr=LR, weight_decay = Weight_decay)
 
 
 # Optimazation function, it do one step of gredient decent, 
@@ -66,8 +68,9 @@ def optimize_model():
     return loss.item(),l_test.item()
 
 # training
-epochs=10
+epochs=1000
 for epoch in range(epochs):
     l_train,l_test=optimize_model()
-    print(f'Epoch [{epoch+1}/{epochs}], L_train: {l_train},L_test: {l_test}')
+    if epoch % 100 ==0:
+        print(f'Epoch [{epoch+1}/{epochs}], L_train: {l_train},L_test: {l_test}')
 
