@@ -27,7 +27,7 @@ company_tickers = ['ADS.DE', 'GOOGL', 'TSLA']  # Replace with actual tickers
 
 # Define the period for your data
 period = '2y'  # Two years period
-interval = '1d'  # Hourly data
+interval = '1h'  # Hourly data
 
 for ticker in company_tickers:
     # Fetch the stock data
